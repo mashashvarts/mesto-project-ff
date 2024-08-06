@@ -17,3 +17,8 @@
     padding: 30px 20px;
   }
 }
+
+
+.filter {
+  filter: blur(1);
+}
