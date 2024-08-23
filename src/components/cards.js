@@ -1,5 +1,6 @@
-import { createCard } from "../index";
-const initialCards = [
+// массив карточек
+
+export const initialCards = [
   {
     name: "Архыз",
     link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg",
@@ -25,14 +26,3 @@ const initialCards = [
     link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
   },
 ];
-
-const cardsContainer = document.querySelector(".places__list");
-
-function renderCards() {
-  initialCards.forEach((item) => {
-    const cardElement = createCard(item);
-    cardsContainer.append(cardElement);
-  });
-}
-
-export { renderCards };
