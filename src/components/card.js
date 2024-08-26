@@ -1,5 +1,6 @@
 // функция создания карточки
-function createCard(item) {
+
+function createCard(item, likeCard, deleteCard, showImagePopup) {
     const cardTemplate = document.querySelector("#card-template").content;
     const cardElement = cardTemplate
       .querySelector(".places__item")
@@ -16,10 +17,11 @@ function createCard(item) {
   
     likeButton.addEventListener("click", likeCard);
     deleteButton.addEventListener("click", deleteCard);
+    cardImage.addEventListener("click", showImagePopup);
   
     return cardElement;
   }
-  
+
   // функция лайка
   
   function likeCard(evt) {

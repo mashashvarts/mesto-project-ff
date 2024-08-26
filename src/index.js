@@ -1,6 +1,6 @@
 import "../pages/index.css";
 import { createCard } from "./components/card.js";
-import { openModal, closeModal } from "./components/modal.js";
+import { openModal, closeModal, handleOverlayClose } from "./components/modal.js";
 import { initialCards } from "./components/cards.js";
 
 const cardsContainer = document.querySelector(".places__list");
@@ -16,6 +16,8 @@ const popupTypeImage = document.querySelector(".popup_type_image");
 const popupImage = popupTypeImage.querySelector(".popup__image");
 const popupCaption = popupTypeImage.querySelector(".popup__caption");
 const editProfileForm = editProfilePopup.querySelector(".popup__form");
+const cardNameInput = document.querySelector(".popup__input_type_card-name");
+const cardLinkInput = document.querySelector(".popup__input_type_url");
 
 // обработчик редактирования профиля
 
@@ -55,17 +57,22 @@ newCardPopup.querySelector(".popup__form").addEventListener("submit", (evt) => {
   closeModal(newCardPopup);
 });
 
-function handleClickAddCard(evt) {
+
+function handleClickAddCard(evt) { 
   evt.preventDefault();
+
   const newCard = {
-    name: document.querySelector(".popup__input_type_card-name").value,
-    link: document.querySelector(".popup__input_type_url").value,
+    name: cardNameInput.value,
+    link: cardLinkInput.value
   };
+
   const cardElement = createCard(newCard);
   cardsContainer.prepend(cardElement);
-  document.querySelector(".popup__input_type_card-name").value = "";
-  document.querySelector(".popup__input_type_url").value = "";
+
+  cardNameInput.value = "";
+  cardLinkInput.value = "";
 }
+
 
 function showImagePopup(card) {
   console.log(card)
@@ -77,12 +84,18 @@ function showImagePopup(card) {
 
 
 // отображение шести карточек при открытии страницы
-
-document.addEventListener("DOMContentLoaded", renderCards);
+renderCards(); 
 
 function renderCards() {
   initialCards.forEach((item) => {
-    const cardElement = createCard(item);
+    const cardElement = createCard(item, showImagePopup);
     cardsContainer.append(cardElement);
   });
 }
+
+// функиция обработчик событий по оверлею
+document
+  .querySelectorAll(".popup")
+  .forEach((popup) =>
+    popup.addEventListener("click", (evt) => handleOverlayClose(evt))
+  );

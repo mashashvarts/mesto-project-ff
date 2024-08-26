@@ -18,23 +18,13 @@ function handleEscClose(evt) {
   }
 }
 
-// функиция обработчик событий по оверлею
-
-document
-  .querySelectorAll(".popup")
-  .forEach((popup) =>
-    popup.addEventListener("click", (evt) => handleOverlayClose(evt))
-  );
-
 function handleOverlayClose(evt) {
   if (
-    (evt.target.classList.contains("popup") &&
-      !evt.target.classList.contains("popup__content")) ||
-    evt.target.classList.contains("popup__close")
+    evt.target.classList.contains("popup") 
+    || evt.target.classList.contains("popup__close")
   ) {
-    const openedModal = document.querySelector(".popup_is-opened");
-    closeModal(openedModal);
+    closeModal(evt.target);
   }
 }
 
-export { openModal, closeModal };
+export { openModal, closeModal, handleOverlayClose };
