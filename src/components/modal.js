@@ -19,10 +19,7 @@ function handleEscClose(evt) {
 }
 
 function handleOverlayClose(evt) {
-  if (
-    evt.target.classList.contains("popup") 
-    || evt.target.classList.contains("popup__close")
-  ) {
+  if (evt.target.classList.contains("popup")) {
     closeModal(evt.target);
   }
 }

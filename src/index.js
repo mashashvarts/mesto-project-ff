@@ -1,5 +1,5 @@
 import "../pages/index.css";
-import { createCard } from "./components/card.js";
+import { createCard, likeCard,  deleteCard } from "./components/card.js";
 import { openModal, closeModal, handleOverlayClose } from "./components/modal.js";
 import { initialCards } from "./components/cards.js";
 
@@ -18,6 +18,7 @@ const popupCaption = popupTypeImage.querySelector(".popup__caption");
 const editProfileForm = editProfilePopup.querySelector(".popup__form");
 const cardNameInput = document.querySelector(".popup__input_type_card-name");
 const cardLinkInput = document.querySelector(".popup__input_type_url");
+const buttonCloseList = document.querySelectorAll('.popup__close');
 
 // обработчик редактирования профиля
 
@@ -38,16 +39,6 @@ editProfileForm.addEventListener("submit", (evt) => {
 
 // открытие модального окна изображения карточки
 
-cardsContainer.addEventListener('click', (evt) => {
-  if (evt.target.classList.contains('card__image')) {
-    const card = {
-      link: evt.target.src,
-      name: evt.target.alt,
-    };
-    showImagePopup(card);
-  }
-});
-
 newCardBtn.addEventListener("click", () => {
   openModal(newCardPopup);
 });
@@ -66,7 +57,7 @@ function handleClickAddCard(evt) {
     link: cardLinkInput.value
   };
 
-  const cardElement = createCard(newCard);
+  const cardElement = createCard(newCard, likeCard, deleteCard, showImagePopup);
   cardsContainer.prepend(cardElement);
 
   cardNameInput.value = "";
@@ -75,7 +66,6 @@ function handleClickAddCard(evt) {
 
 
 function showImagePopup(card) {
-  console.log(card)
   popupImage.src = card.link;
   popupImage.alt = card.name;
   popupCaption.textContent = card.name;
@@ -88,14 +78,20 @@ renderCards();
 
 function renderCards() {
   initialCards.forEach((item) => {
-    const cardElement = createCard(item, showImagePopup);
+    const cardElement = createCard(item, likeCard,  deleteCard, showImagePopup);
     cardsContainer.append(cardElement);
   });
 }
 
-// функиция обработчик событий по оверлею
+// функция обработчик событий по оверлею
 document
   .querySelectorAll(".popup")
   .forEach((popup) =>
     popup.addEventListener("click", (evt) => handleOverlayClose(evt))
-  );
+);
+
+
+buttonCloseList.forEach(btn => {
+  const popup = btn.closest('.popup');
+  btn.addEventListener('click', () => closeModal(popup)); 
+});
