@@ -26,7 +26,7 @@
   }
 }
 
-.disabled__state-btn {
+.popup__button_disabled {
   background-color: transparent;
   border: 1px solid #000;
   color: #000;
