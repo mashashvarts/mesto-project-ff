@@ -8,12 +8,14 @@ const selectors = {
   };
   
   // Показать ошибку ввода
-  function showInputError(formElement, inputElement, errorMessage) {
+  function showInputError(formElement, inputElement) {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+    const customErrorMessage = inputElement.dataset.errorMessage; 
     inputElement.classList.add(selectors.inputErrorClass);
-    errorElement.textContent = errorMessage;
+    errorElement.textContent = customErrorMessage || inputElement.validationMessage;
     errorElement.classList.add(selectors.errorClass);
   }
+  
   
   // Скрыть ошибку ввода
   function hideInputError(formElement, inputElement) {
