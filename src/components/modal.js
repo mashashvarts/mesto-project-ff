@@ -1,16 +1,15 @@
-// Функция открытия модального окна
-function openModal(modal) {
+const popups = document.querySelectorAll('.popup');
+
+export function openModal(modal) {
   modal.classList.add("popup_is-opened");
   document.addEventListener("keydown", handleEscClose);
 }
 
-// Функция закрытия модального окна
-function closeModal(modal) {
+export function closeModal(modal) {
   modal.classList.remove("popup_is-opened");
   document.removeEventListener("keydown", handleEscClose);
 }
 
-// Закрытие по Esc
 function handleEscClose(evt) {
   if (evt.key === "Escape") {
     const openedModal = document.querySelector(".popup_is-opened");
@@ -18,10 +17,15 @@ function handleEscClose(evt) {
   }
 }
 
-function handleOverlayClose(evt) {
-  if (evt.target.classList.contains("popup")) {
-    closeModal(evt.target);
-  }
-}
+popups.forEach((popup) => {
+  popup.addEventListener('click', (evt) => {
+    if (evt.target.classList.contains('popup')) {
+      closeModal(popup);
+    }
+  });
 
-export { openModal, closeModal, handleOverlayClose };
+  const closeButton = popup.querySelector('.popup__close');
+  if (closeButton) {
+    closeButton.addEventListener('click', () => closeModal(popup));
+  }
+});
