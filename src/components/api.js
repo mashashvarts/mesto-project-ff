@@ -1,7 +1,6 @@
 "use strict";
 
 const cohortId = "wff-cohort-21";
-export let userId;
 const authorizationToken = "00868a1e-ca26-4726-a888-3ea76b84febf";
 const config = {
   baseUrl: `https://nomoreparties.co/v1/${cohortId}`,
@@ -11,10 +10,6 @@ const config = {
   }
 };
 
-export function setUserId(id) {
-  userId = id;
-}
-
 export function handleError(err) {
   if (err.status === undefined) {
     console.log('Неизвестная ошибка');
@@ -23,7 +18,7 @@ export function handleError(err) {
   }
 }
 
-function getData(path, method = "GET", body = null) {
+function sendRequest(path, method = "GET", body = null) {
   const params = {
     method: method,
     headers: config.headers
@@ -41,33 +36,33 @@ function getData(path, method = "GET", body = null) {
 }
 
 export function getProfileData() {
-  return getData("users/me");
+  return sendRequest("users/me");
 }
 
 export function getInitialCards() {
-  return getData("cards");
+  return sendRequest("cards");
 }
 
 export function updateProfileInfo(name, about) {
-  return getData("users/me", "PATCH", { name: name, about: about });
+  return sendRequest("users/me", "PATCH", { name: name, about: about });
 }
 
 export function createCard(name, link) {
-  return getData("cards", "POST", { name: name, link: link });
+  return sendRequest("cards", "POST", { name: name, link: link });
 }
 
 export function deleteCard(id) {
-  return getData(`cards/${id}`, 'DELETE');
+  return sendRequest(`cards/${id}`, 'DELETE');
 }
 
 export function setLike(id) {
-  return getData(`cards/likes/${id}`, 'PUT');
+  return sendRequest(`cards/likes/${id}`, 'PUT');
 }
 
 export function unsetLike(id) {
-  return getData(`cards/likes/${id}`, 'DELETE');
+  return sendRequest(`cards/likes/${id}`, 'DELETE');
 }
 
 export function updateAvatar(link) {
-  return getData('users/me/avatar', 'PATCH', { avatar: link });
+  return sendRequest('users/me/avatar', 'PATCH', { avatar: link });
 }

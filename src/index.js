@@ -8,7 +8,7 @@ import {
 } from "./components/api.js";
 import { createCard } from "./components/card.js";
 import { openModal, closeModal } from "./components/modal.js";
-import { enableValidation } from "./components/validation.js";
+import { enableValidation, selectors } from "./components/validation.js";
 
 // Элементы профиля и кнопки
 const profileName = document.querySelector(".profile__title");
@@ -25,6 +25,7 @@ const profileNameInput = profileForm.querySelector(".popup__input_type_name");
 const profileDescriptionInput = profileForm.querySelector(
   ".popup__input_type_description"
 );
+const popupButton = profileForm.querySelector(".popup__button");
 
 const newCardPopup = document.querySelector(".popup_type_new-card");
 const newCardForm = newCardPopup.querySelector(".popup__form");
@@ -48,6 +49,8 @@ const cardsContainer = document.querySelector(".places__list");
 const cardTemplate = document.querySelector("#card-template").content;
 
 let currentUserId; // ID текущего пользователя
+
+const submitButton = profileForm.querySelector(".popup__button");
 
 // Инициализация данных профиля и карточек
 Promise.all([getProfileData(), getInitialCards()])
@@ -73,9 +76,11 @@ function renderCards(cards, userId) {
       cardTemplate,
       showImagePopup,
       deleteCardPopup,
-      userId
+      userId,
+      openModal,
+      closeModal
     );
-    cardsContainer.prepend(cardElement);
+    cardsContainer.append(cardElement);
   });
 }
 
@@ -89,7 +94,7 @@ profileEditButton.addEventListener("click", () => {
 // Обработка сохранения данных профиля
 profileForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
-  profileForm.querySelector(".popup__button").textContent = "Сохранение...";
+  popupButton.textContent = "Сохранение...";
 
   updateProfileInfo(profileNameInput.value, profileDescriptionInput.value)
     .then((data) => {
@@ -98,7 +103,7 @@ profileForm.addEventListener("submit", (evt) => {
     })
     .catch((err) => console.error(`Ошибка: ${err}`))
     .finally(() => {
-      profileForm.querySelector(".popup__button").textContent = "Сохранить";
+      popupButton.textContent = "Сохранить";
     });
 });
 
@@ -140,7 +145,7 @@ avatarEditButton.addEventListener("click", () => {
 // Обработка сохранения аватара пользователя
 avatarForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
-  avatarForm.querySelector(".popup__button").textContent = "Сохранение...";
+  submitButton.textContent = "Сохранение...";
 
   updateAvatar(avatarLinkInput.value)
     .then((data) => {
@@ -149,7 +154,7 @@ avatarForm.addEventListener("submit", (evt) => {
     })
     .catch((err) => console.error(`Ошибка: ${err}`))
     .finally(() => {
-      avatarForm.querySelector(".popup__button").textContent = "Сохранить";
+      submitButton.textContent = "Сохранить";
     });
 });
 
@@ -162,4 +167,4 @@ function showImagePopup(name, link) {
 }
 
 // Включение валидации для всех форм
-enableValidation();
+enableValidation(selectors);

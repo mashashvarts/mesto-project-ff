@@ -1,5 +1,5 @@
 import { setLike, unsetLike, deleteCard as deleteCardApi } from "./api.js";
-import { openModal, closeModal } from "./modal.js";
+
 
 // Функция для проверки, лайкнута ли карточка текущим пользователем
 function hasBeenLikedByCurrentUser(card, userId) {
@@ -12,7 +12,9 @@ export function createCard(
   cardTemplate,
   renderPreviewCallback,
   deletePopup,
-  userId
+  userId,
+  openModal,
+  closeModal
 ) {
   const cardElement = cardTemplate
     .querySelector(".places__item")
