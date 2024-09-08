@@ -25,7 +25,6 @@ const profileNameInput = profileForm.querySelector(".popup__input_type_name");
 const profileDescriptionInput = profileForm.querySelector(
   ".popup__input_type_description"
 );
-const popupButton = profileForm.querySelector(".popup__button");
 
 const newCardPopup = document.querySelector(".popup_type_new-card");
 const newCardForm = newCardPopup.querySelector(".popup__form");
@@ -78,7 +77,8 @@ function renderCards(cards, userId) {
       deleteCardPopup,
       userId,
       openModal,
-      closeModal
+      closeModal,
+      setDeleteCardAction
     );
     cardsContainer.append(cardElement);
   });
@@ -94,7 +94,7 @@ profileEditButton.addEventListener("click", () => {
 // Обработка сохранения данных профиля
 profileForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
-  popupButton.textContent = "Сохранение...";
+  profileForm.querySelector(".popup__button").textContent = "Сохранение...";
 
   updateProfileInfo(profileNameInput.value, profileDescriptionInput.value)
     .then((data) => {
@@ -103,7 +103,7 @@ profileForm.addEventListener("submit", (evt) => {
     })
     .catch((err) => console.error(`Ошибка: ${err}`))
     .finally(() => {
-      popupButton.textContent = "Сохранить";
+      profileForm.querySelector(".popup__button").textContent = "Сохранить";
     });
 });
 
@@ -125,7 +125,10 @@ newCardForm.addEventListener("submit", (evt) => {
         cardTemplate,
         showImagePopup,
         deleteCardPopup,
-        currentUserId
+        currentUserId,
+        openModal,
+        closeModal,
+        setDeleteCardAction 
       );
       cardsContainer.prepend(cardElement);
       closeModal(newCardPopup);
@@ -164,6 +167,13 @@ function showImagePopup(name, link) {
   previewImage.alt = name;
   previewCaption.textContent = name;
   openModal(previewPopup);
+}
+
+function setDeleteCardAction(deleteAction) {
+  const confirmDeleteButton = document.querySelector(
+    ".popup_type_confirm_delete .popup__button"
+  );
+  confirmDeleteButton.onclick = deleteAction; 
 }
 
 // Включение валидации для всех форм

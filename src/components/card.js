@@ -14,7 +14,8 @@ export function createCard(
   deletePopup,
   userId,
   openModal,
-  closeModal
+  closeModal,
+  setDeleteCardAction
 ) {
   const cardElement = cardTemplate
     .querySelector(".places__item")
@@ -56,13 +57,6 @@ export function createCard(
   });
 
   let currentCardToDelete = null; 
-
-  function setDeleteCardAction(deleteAction) {
-    const confirmDeleteButton = document.querySelector(
-      ".popup_type_confirm_delete .popup__button"
-    );
-    confirmDeleteButton.onclick = deleteAction; 
-  }
 
   // Обработчик клика по кнопке удаления
   if (cardData.owner._id === userId) {
