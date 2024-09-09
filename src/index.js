@@ -5,6 +5,7 @@ import {
   updateProfileInfo,
   createCard as createCardApi,
   updateAvatar,
+  deleteCard
 } from "./components/api.js";
 import { createCard } from "./components/card.js";
 import { openModal, closeModal } from "./components/modal.js";
@@ -78,7 +79,8 @@ function renderCards(cards, userId) {
       userId,
       openModal,
       closeModal,
-      setDeleteCardAction
+      setDeleteCardAction,
+      deleteOwnCard
     );
     cardsContainer.append(cardElement);
   });
@@ -128,7 +130,8 @@ newCardForm.addEventListener("submit", (evt) => {
         currentUserId,
         openModal,
         closeModal,
-        setDeleteCardAction 
+        setDeleteCardAction,
+        deleteOwnCard
       );
       cardsContainer.prepend(cardElement);
       closeModal(newCardPopup);
@@ -175,6 +178,23 @@ function setDeleteCardAction(deleteAction) {
   );
   confirmDeleteButton.onclick = deleteAction; 
 }
+
+let currentCardToDelete = null; 
+
+function deleteOwnCard(cardData, cardElement) {
+  currentCardToDelete = cardElement;
+  openModal(deleteCardPopup);
+   setDeleteCardAction((e) => {
+     e.preventDefault()
+     deleteCard(cardData._id)
+       .then(() => {
+         currentCardToDelete.remove();
+         closeModal(deleteCardPopup);
+       })
+       .catch(console.error);
+   });
+} 
+
 
 // Включение валидации для всех форм
 enableValidation(selectors);

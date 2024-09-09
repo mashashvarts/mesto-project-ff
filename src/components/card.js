@@ -1,4 +1,4 @@
-import { setLike, unsetLike, deleteCard as deleteCardApi } from "./api.js";
+import { setLike, unsetLike} from "./api.js";
 
 
 // Функция для проверки, лайкнута ли карточка текущим пользователем
@@ -11,11 +11,8 @@ export function createCard(
   cardData,
   cardTemplate,
   renderPreviewCallback,
-  deletePopup,
   userId,
-  openModal,
-  closeModal,
-  setDeleteCardAction
+  deleteOwnCard
 ) {
   const cardElement = cardTemplate
     .querySelector(".places__item")
@@ -56,23 +53,9 @@ export function createCard(
     }
   });
 
-  let currentCardToDelete = null; 
-
   // Обработчик клика по кнопке удаления
   if (cardData.owner._id === userId) {
-    deleteButton.addEventListener("click", () => {
-      currentCardToDelete = cardElement;
-      openModal(deletePopup);
-      setDeleteCardAction((e) => {
-        e.preventDefault()
-        deleteCardApi(cardData._id)
-          .then(() => {
-            currentCardToDelete.remove();
-            closeModal(deletePopup);
-          })
-          .catch(console.error);
-      });
-    });
+    deleteButton.addEventListener("click", () => deleteOwnCard(cardData, cardElement));
   } else {
     deleteButton.remove();
   }
